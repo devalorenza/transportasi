@@ -1,0 +1,444 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TransitPro - Sistem Informasi Transportasi</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-sky-50 text-slate-800">
+
+<nav class="sticky top-0 z-50 bg-sky-600 text-white shadow-md">
+  <div class="mx-auto flex max-w-7xl items-center justify-between px-6 py-4">
+    <a href="#dashboard" class="flex items-center gap-3">
+      <div class="rounded-xl bg-sky-500 p-3"><i data-lucide="bus-front"></i></div>
+      <div><h1 class="text-xl font-bold">TransitPro</h1><p class="text-xs">Sistem Informasi Transportasi</p></div>
+    </a>
+    <div class="hidden gap-4 md:flex">
+      <a href="#dashboard">Dashboard</a>
+      <a href="#armada">Data Armada</a>
+      <a href="#jadwal">Jadwal</a>
+      <a href="#tiket">Tiket</a>
+      <a href="#laporan">Laporan</a>
+    </div>
+    <button id="menuButton" class="rounded-lg p-2 hover:bg-sky-500 md:hidden" aria-label="Buka menu">
+      <i data-lucide="menu"></i>
+    </button>
+  </div>
+  <div id="mobileMenu" class="hidden space-y-2 border-t border-sky-500 px-6 py-4 md:hidden">
+    <a class="block" href="#dashboard">Dashboard</a>
+    <a class="block" href="#armada">Data Armada</a>
+    <a class="block" href="#jadwal">Jadwal</a>
+    <a class="block" href="#tiket">Tiket</a>
+    <a class="block" href="#laporan">Laporan</a>
+  </div>
+</nav>
+
+<main id="dashboard" class="mx-auto max-w-7xl space-y-8 px-6 py-8">
+
+  <section class="flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+    <div>
+      <p class="font-semibold text-sky-600">SISTEM INFORMASI MANAJEMEN</p>
+      <h2 class="mt-1 text-3xl font-bold">Dashboard</h2>
+      <p class="mt-2 text-slate-500">Ringkasan operasional transportasi publik.</p>
+    </div>
+    <div class="rounded-xl border border-sky-100 bg-white p-4 shadow-sm">
+      <p class="text-xs text-slate-500">Tanggal operasional</p>
+      <p id="currentDate" class="mt-1 font-semibold"></p>
+    </div>
+  </section>
+
+  <section class="grid grid-cols-1 gap-5 sm:grid-cols-2 xl:grid-cols-4">
+    <div class="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Total Armada</p>
+      <h3 id="totalArmada" class="mt-3 text-3xl font-bold">0</h3>
+      <p class="mt-2 text-xs text-slate-500">Data kendaraan tersimpan</p>
+    </div>
+    <div class="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Penumpang Hari Ini</p>
+      <h3 class="mt-3 text-3xl font-bold">186</h3>
+      <p class="mt-2 text-xs text-slate-500">Data simulasi</p>
+    </div>
+    <div class="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Tiket Terjual</p>
+      <h3 class="mt-3 text-3xl font-bold">142</h3>
+      <p class="mt-2 text-xs text-slate-500">Data simulasi</p>
+    </div>
+    <div class="rounded-2xl border border-sky-100 bg-white p-5 shadow-sm">
+      <p class="text-sm text-slate-500">Pendapatan</p>
+      <h3 class="mt-3 text-2xl font-bold">Rp4.260.000</h3>
+      <p class="mt-2 text-xs text-slate-500">Data simulasi</p>
+    </div>
+  </section>
+
+  <!-- DATA ARMADA -->
+  <section id="armada" class="overflow-hidden rounded-2xl border bg-white shadow-sm">
+    <div class="flex flex-col justify-between gap-4 border-b p-6 sm:flex-row sm:items-center">
+      <div><h3 class="text-xl font-bold">Data Armada</h3><p class="mt-1 text-sm text-slate-500">Kelola kendaraan transportasi publik.</p></div>
+      <button id="addButton" class="rounded-xl bg-sky-600 px-4 py-3 font-semibold text-white hover:bg-sky-700">+ Tambah Armada</button>
+    </div>
+
+    <div id="formPanel" class="hidden border-b bg-sky-50 p-6">
+      <h4 id="formTitle" class="mb-4 text-lg font-bold">Tambah Armada</h4>
+      <form id="armadaForm" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <input id="armadaId" type="hidden">
+        <div><label for="kode" class="mb-2 block text-sm">Kode Armada</label><input id="kode" required maxlength="20" class="w-full rounded-xl border p-3" placeholder="BUS005"></div>
+        <div><label for="nama" class="mb-2 block text-sm">Nama Armada</label><input id="nama" required class="w-full rounded-xl border p-3" placeholder="Bus Kota 05"></div>
+        <div><label for="jenis" class="mb-2 block text-sm">Jenis Kendaraan</label><select id="jenis" class="w-full rounded-xl border p-3"><option>Bus</option><option>Minibus</option><option>Angkot</option><option>Kereta</option></select></div>
+        <div><label for="kapasitas" class="mb-2 block text-sm">Kapasitas Penumpang</label><input id="kapasitas" type="number" min="1" max="1000" required class="w-full rounded-xl border p-3"></div>
+        <div><label for="statusArmada" class="mb-2 block text-sm">Status Operasional</label><select id="statusArmada" class="w-full rounded-xl border p-3"><option>Beroperasi</option><option>Perawatan</option><option>Tidak Aktif</option></select></div>
+        <div class="flex items-end gap-3"><button class="flex-1 rounded-xl bg-sky-600 p-3 font-semibold text-white" type="submit">Simpan</button><button id="cancelButton" type="button" class="rounded-xl border bg-white p-3">Batal</button></div>
+      </form>
+    </div>
+
+    <div class="p-6"><label for="armadaSearch" class="mb-2 block text-sm font-medium">Cari Armada</label><input id="armadaSearch" type="search" class="w-full rounded-xl border p-3" placeholder="Cari kode, nama, atau jenis kendaraan..."></div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-sky-50"><tr><th class="p-4">Kode</th><th class="p-4">Nama</th><th class="p-4">Jenis</th><th class="p-4">Kapasitas</th><th class="p-4">Status</th><th class="p-4">Aksi</th></tr></thead>
+        <tbody id="armadaTable" class="divide-y"></tbody>
+      </table>
+    </div>
+    <p id="emptyArmada" class="hidden p-6 text-center text-slate-500">Data armada tidak ditemukan.</p>
+    <div class="border-t p-4 text-sm text-slate-500" id="armadaCount"></div>
+  </section>
+
+  <!-- JADWAL PERJALANAN -->
+  <section id="jadwal" class="overflow-hidden rounded-2xl border bg-white shadow-sm">
+    <div class="flex flex-col justify-between gap-4 border-b p-6 sm:flex-row sm:items-center">
+      <div><h3 class="text-xl font-bold">Data Jadwal Perjalanan</h3><p class="mt-1 text-sm text-slate-500">Kelola rute dan waktu perjalanan.</p></div>
+      <button id="tambahJadwal" class="rounded-xl bg-sky-600 px-4 py-3 font-semibold text-white hover:bg-sky-700">+ Tambah Jadwal</button>
+    </div>
+
+    <div id="panelJadwal" class="hidden border-b bg-sky-50 p-6">
+      <h4 id="judulFormJadwal" class="mb-4 text-lg font-bold">Tambah Jadwal</h4>
+      <form id="formJadwal" class="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
+        <input id="idJadwal" type="hidden">
+        <div><label for="kodeJadwal" class="mb-2 block text-sm">Kode Jadwal</label><input id="kodeJadwal" required class="w-full rounded-xl border p-3" placeholder="TR005"></div>
+        <div><label for="ruteJadwal" class="mb-2 block text-sm">Rute Perjalanan</label><input id="ruteJadwal" required class="w-full rounded-xl border p-3" placeholder="Terminal A - Terminal B"></div>
+        <div><label for="armadaJadwal" class="mb-2 block text-sm">Armada</label><select id="armadaJadwal" required class="w-full rounded-xl border p-3"></select></div>
+        <div><label for="jamBerangkat" class="mb-2 block text-sm">Jam Keberangkatan</label><input id="jamBerangkat" type="time" required class="w-full rounded-xl border p-3"></div>
+        <div><label for="jamTiba" class="mb-2 block text-sm">Jam Kedatangan</label><input id="jamTiba" type="time" required class="w-full rounded-xl border p-3"></div>
+        <div><label for="statusJadwal" class="mb-2 block text-sm">Status Perjalanan</label><select id="statusJadwal" class="w-full rounded-xl border p-3"><option>Terjadwal</option><option>Berangkat</option><option>Selesai</option></select></div>
+        <div class="flex items-end gap-3 sm:col-span-2 lg:col-span-3"><button type="submit" class="rounded-xl bg-sky-600 px-5 py-3 font-semibold text-white">Simpan Jadwal</button><button id="batalJadwal" type="button" class="rounded-xl border bg-white px-5 py-3">Batal</button></div>
+      </form>
+    </div>
+
+    <div class="p-6"><label for="cariJadwal" class="mb-2 block text-sm font-medium">Cari Jadwal</label><input id="cariJadwal" type="search" class="w-full rounded-xl border p-3" placeholder="Cari kode, rute, atau armada..."></div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-sky-50"><tr><th class="p-4">Kode</th><th class="p-4">Rute</th><th class="p-4">Berangkat</th><th class="p-4">Tiba</th><th class="p-4">Armada</th><th class="p-4">Status</th><th class="p-4">Aksi</th></tr></thead>
+        <tbody id="tabelJadwal" class="divide-y"></tbody>
+      </table>
+    </div>
+    <p id="jadwalKosong" class="hidden p-6 text-center text-slate-500">Jadwal tidak ditemukan.</p>
+    <div class="border-t p-4 text-sm text-slate-500" id="jumlahJadwal"></div>
+  </section>
+
+  <!-- MANAJEMEN TIKET -->
+  <section id="tiket" class="overflow-hidden rounded-2xl border bg-white shadow-sm">
+    <div class="border-b p-6"><h3 class="text-xl font-bold">Manajemen Tiket</h3><p class="mt-1 text-sm text-slate-500">Cari transaksi dan filter status pembayaran.</p></div>
+    <div class="flex flex-col gap-3 p-6 sm:flex-row">
+      <input id="ticketSearch" type="search" class="flex-1 rounded-xl border p-3" placeholder="Cari kode tiket, penumpang, atau rute...">
+      <select id="statusFilter" class="rounded-xl border p-3"><option value="">Semua Status</option><option>Lunas</option><option>Menunggu</option><option>Dibatalkan</option></select>
+    </div>
+    <div class="overflow-x-auto">
+      <table class="w-full text-left text-sm">
+        <thead class="bg-sky-50"><tr><th class="p-4">Kode Tiket</th><th class="p-4">Penumpang</th><th class="p-4">Rute</th><th class="p-4">Harga</th><th class="p-4">Status</th></tr></thead>
+        <tbody id="ticketTable" class="divide-y">
+          <tr data-status="Lunas"><td class="p-4">TKT001</td><td class="p-4">Andi Saputra</td><td class="p-4">Terminal A – Terminal B</td><td class="p-4">Rp25.000</td><td class="p-4 text-emerald-700">Lunas</td></tr>
+          <tr data-status="Menunggu"><td class="p-4">TKT002</td><td class="p-4">Siti Rahma</td><td class="p-4">Terminal B – Terminal C</td><td class="p-4">Rp30.000</td><td class="p-4 text-amber-700">Menunggu</td></tr>
+          <tr data-status="Lunas"><td class="p-4">TKT003</td><td class="p-4">Budi Santoso</td><td class="p-4">Terminal C – Terminal A</td><td class="p-4">Rp20.000</td><td class="p-4 text-emerald-700">Lunas</td></tr>
+          <tr data-status="Dibatalkan"><td class="p-4">TKT004</td><td class="p-4">Dina Putri</td><td class="p-4">Terminal A – Terminal D</td><td class="p-4">Rp35.000</td><td class="p-4 text-rose-700">Dibatalkan</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p id="noTickets" class="hidden p-6 text-center text-slate-500">Transaksi tidak ditemukan.</p>
+    <div class="border-t p-4 text-sm text-slate-500" id="ticketCount"></div>
+  </section>
+
+  <footer id="laporan" class="pb-4 text-center text-sm text-slate-500">© 2026 TransitPro — Sistem Informasi Manajemen Transportasi Publik</footer>
+</main>
+
+<script>
+"use strict";
+
+// PENYIMPANAN DATA DI BROWSER
+const KEY_ARMADA = "transitpro_data_armada_v1";
+const KEY_JADWAL = "transitpro_data_jadwal_v1";
+
+const dataArmadaAwal = [
+  {id:"A1",kode:"BUS001",nama:"Bus Kota 01",jenis:"Bus",kapasitas:40,status:"Beroperasi"},
+  {id:"A2",kode:"BUS002",nama:"Bus Kota 02",jenis:"Bus",kapasitas:40,status:"Beroperasi"},
+  {id:"A3",kode:"MIN001",nama:"Minibus 01",jenis:"Minibus",kapasitas:18,status:"Perawatan"},
+  {id:"A4",kode:"ANG001",nama:"Angkutan Kota 01",jenis:"Angkot",kapasitas:12,status:"Tidak Aktif"}
+];
+const dataJadwalAwal = [
+  {id:"J1",kode:"TR001",rute:"Terminal A - Terminal B",berangkat:"08:00",tiba:"09:00",armada:"BUS001",status:"Berangkat"},
+  {id:"J2",kode:"TR002",rute:"Terminal B - Terminal C",berangkat:"09:30",tiba:"10:30",armada:"BUS002",status:"Terjadwal"},
+  {id:"J3",kode:"TR003",rute:"Terminal C - Terminal A",berangkat:"11:00",tiba:"12:00",armada:"BUS001",status:"Berangkat"},
+  {id:"J4",kode:"TR004",rute:"Terminal A - Terminal D",berangkat:"13:30",tiba:"14:30",armada:"MIN001",status:"Terjadwal"}
+];
+
+function bacaData(key, dataAwal) {
+  try {
+    const isi = localStorage.getItem(key);
+    if (isi === null) {
+      localStorage.setItem(key, JSON.stringify(dataAwal));
+      return dataAwal.map(x => ({...x}));
+    }
+    const data = JSON.parse(isi);
+    if (!Array.isArray(data)) throw new Error("Format data tidak valid");
+    return data;
+  } catch (error) {
+    console.error(error);
+    return dataAwal.map(x => ({...x}));
+  }
+}
+function simpanData(key, data) {
+  try {
+    localStorage.setItem(key, JSON.stringify(data));
+    return true;
+  } catch (error) {
+    alert("Data gagal disimpan di browser.");
+    return false;
+  }
+}
+function idBaru(prefix) {
+  return prefix + Date.now() + Math.random().toString(36).slice(2,6);
+}
+function aman(value) {
+  return String(value ?? "").replace(/[&<>"']/g, c => ({
+    "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+  })[c]);
+}
+
+let armada = bacaData(KEY_ARMADA, dataArmadaAwal);
+let jadwal = bacaData(KEY_JADWAL, dataJadwalAwal);
+
+document.getElementById("currentDate").textContent =
+  new Intl.DateTimeFormat("id-ID",{day:"numeric",month:"long",year:"numeric"}).format(new Date());
+
+// MENU MOBILE
+const menuButton = document.getElementById("menuButton");
+const mobileMenu = document.getElementById("mobileMenu");
+menuButton.addEventListener("click", () => {
+  const tertutup = mobileMenu.classList.toggle("hidden");
+  menuButton.setAttribute("aria-expanded", String(!tertutup));
+});
+mobileMenu.querySelectorAll("a").forEach(a => a.addEventListener("click", () => mobileMenu.classList.add("hidden")));
+
+// MODUL ARMADA
+const armadaForm = document.getElementById("armadaForm");
+const formPanel = document.getElementById("formPanel");
+const formTitle = document.getElementById("formTitle");
+const armadaId = document.getElementById("armadaId");
+const kode = document.getElementById("kode");
+const nama = document.getElementById("nama");
+const jenis = document.getElementById("jenis");
+const kapasitas = document.getElementById("kapasitas");
+const statusArmada = document.getElementById("statusArmada");
+const armadaTable = document.getElementById("armadaTable");
+const armadaSearch = document.getElementById("armadaSearch");
+
+function resetFormArmada() {
+  armadaForm.reset();
+  armadaId.value = "";
+  formPanel.classList.add("hidden");
+  formTitle.textContent = "Tambah Armada";
+}
+document.getElementById("addButton").addEventListener("click", () => {
+  resetFormArmada();
+  formPanel.classList.remove("hidden");
+  formPanel.scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("cancelButton").addEventListener("click", resetFormArmada);
+
+function tampilkanArmada() {
+  const keyword = armadaSearch.value.toLowerCase().trim();
+  const hasil = armada.filter(a =>
+    [a.kode,a.nama,a.jenis,a.kapasitas,a.status].join(" ").toLowerCase().includes(keyword)
+  );
+  armadaTable.innerHTML = hasil.map(a => {
+    const warna = a.status === "Beroperasi" ? "text-emerald-700" :
+      a.status === "Perawatan" ? "text-amber-700" : "text-slate-600";
+    return `<tr>
+      <td class="p-4 font-semibold">${aman(a.kode)}</td>
+      <td class="p-4">${aman(a.nama)}</td>
+      <td class="p-4">${aman(a.jenis)}</td>
+      <td class="p-4">${aman(a.kapasitas)} orang</td>
+      <td class="p-4 ${warna}">${aman(a.status)}</td>
+      <td class="p-4"><div class="flex gap-2">
+        <button class="rounded-lg bg-sky-100 p-2 text-sky-700" data-armada="edit" data-id="${aman(a.id)}" title="Edit"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+        <button class="rounded-lg bg-rose-100 p-2 text-rose-700" data-armada="hapus" data-id="${aman(a.id)}" title="Hapus"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+      </div></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("emptyArmada").classList.toggle("hidden",hasil.length > 0);
+  document.getElementById("armadaCount").textContent = `${hasil.length} dari ${armada.length} data ditampilkan`;
+  document.getElementById("totalArmada").textContent = armada.length;
+  lucide.createIcons();
+}
+armadaSearch.addEventListener("input", tampilkanArmada);
+
+armadaForm.addEventListener("submit", e => {
+  e.preventDefault();
+  const id = armadaId.value;
+  const kodeBaru = kode.value.trim();
+  const namaBaru = nama.value.trim();
+  const kapasitasBaru = Number(kapasitas.value);
+  if (!kodeBaru || !namaBaru || !Number.isInteger(kapasitasBaru) || kapasitasBaru < 1) {
+    alert("Periksa kembali data armada."); return;
+  }
+  if (armada.some(a => a.kode.toLowerCase() === kodeBaru.toLowerCase() && a.id !== id)) {
+    alert("Kode armada sudah digunakan."); return;
+  }
+  const baru = {id:id || idBaru("A"),kode:kodeBaru,nama:namaBaru,jenis:jenis.value,kapasitas:kapasitasBaru,status:statusArmada.value};
+  const lama = armada;
+  armada = id ? armada.map(a => a.id === id ? baru : a) : [...armada,baru];
+  if (!simpanData(KEY_ARMADA,armada)) {armada=lama;return;}
+  resetFormArmada(); tampilkanArmada(); isiPilihanArmada();
+  alert(id ? "Armada berhasil diperbarui." : "Armada berhasil ditambahkan.");
+});
+
+armadaTable.addEventListener("click", e => {
+  const btn = e.target.closest("button[data-armada]");
+  if (!btn) return;
+  const item = armada.find(a => a.id === btn.dataset.id);
+  if (!item) return;
+  if (btn.dataset.armada === "edit") {
+    armadaId.value=item.id; kode.value=item.kode; nama.value=item.nama;
+    jenis.value=item.jenis; kapasitas.value=item.kapasitas; statusArmada.value=item.status;
+    formTitle.textContent="Edit Armada"; formPanel.classList.remove("hidden");
+    formPanel.scrollIntoView({behavior:"smooth"});
+  } else if (confirm(`Hapus armada ${item.kode} - ${item.nama}?`)) {
+    const lama=armada; armada=armada.filter(a=>a.id!==item.id);
+    if (!simpanData(KEY_ARMADA,armada)) {armada=lama;return;}
+    tampilkanArmada(); isiPilihanArmada();
+  }
+});
+
+// MODUL JADWAL
+const formJadwal = document.getElementById("formJadwal");
+const panelJadwal = document.getElementById("panelJadwal");
+const idJadwal = document.getElementById("idJadwal");
+const kodeJadwal = document.getElementById("kodeJadwal");
+const ruteJadwal = document.getElementById("ruteJadwal");
+const armadaJadwal = document.getElementById("armadaJadwal");
+const jamBerangkat = document.getElementById("jamBerangkat");
+const jamTiba = document.getElementById("jamTiba");
+const statusJadwal = document.getElementById("statusJadwal");
+const cariJadwal = document.getElementById("cariJadwal");
+const tabelJadwal = document.getElementById("tabelJadwal");
+
+function isiPilihanArmada() {
+  const sebelumnya = armadaJadwal.value;
+  armadaJadwal.innerHTML = armada.map(a =>
+    `<option value="${aman(a.kode)}">${aman(a.kode)} - ${aman(a.nama)}</option>`
+  ).join("");
+  if (armada.some(a => a.kode === sebelumnya)) armadaJadwal.value = sebelumnya;
+}
+function resetFormJadwal() {
+  formJadwal.reset(); idJadwal.value = "";
+  panelJadwal.classList.add("hidden");
+  document.getElementById("judulFormJadwal").textContent = "Tambah Jadwal";
+}
+function tampilkanJadwal() {
+  const keyword = cariJadwal.value.toLowerCase().trim();
+  const hasil = jadwal.filter(j =>
+    [j.kode,j.rute,j.armada,j.berangkat,j.tiba,j.status].join(" ").toLowerCase().includes(keyword)
+  );
+  tabelJadwal.innerHTML = hasil.map(j => {
+    const namaArmada = armada.find(a=>a.kode===j.armada)?.nama;
+    const armadaTampil = namaArmada ? `${j.armada} - ${namaArmada}` : `${j.armada} (tidak terdaftar)`;
+    const warna = j.status === "Berangkat" ? "text-emerald-700" : j.status === "Selesai" ? "text-slate-500" : "text-sky-700";
+    return `<tr>
+      <td class="p-4 font-semibold">${aman(j.kode)}</td><td class="p-4">${aman(j.rute)}</td>
+      <td class="p-4">${aman(j.berangkat)} WIB</td><td class="p-4">${aman(j.tiba)} WIB</td>
+      <td class="p-4">${aman(armadaTampil)}</td><td class="p-4 ${warna}">${aman(j.status)}</td>
+      <td class="p-4"><div class="flex gap-2">
+        <button class="rounded-lg bg-sky-100 p-2 text-sky-700" data-jadwal="edit" data-id="${aman(j.id)}" title="Edit"><i data-lucide="pencil" class="h-4 w-4"></i></button>
+        <button class="rounded-lg bg-rose-100 p-2 text-rose-700" data-jadwal="hapus" data-id="${aman(j.id)}" title="Hapus"><i data-lucide="trash-2" class="h-4 w-4"></i></button>
+      </div></td>
+    </tr>`;
+  }).join("");
+  document.getElementById("jadwalKosong").classList.toggle("hidden",hasil.length > 0);
+  document.getElementById("jumlahJadwal").textContent = `${hasil.length} dari ${jadwal.length} jadwal ditampilkan`;
+  lucide.createIcons();
+}
+document.getElementById("tambahJadwal").addEventListener("click", () => {
+  if (!armada.length) {alert("Tambahkan armada terlebih dahulu.");return;}
+  resetFormJadwal(); isiPilihanArmada();
+  document.getElementById("judulFormJadwal").textContent="Tambah Jadwal";
+  panelJadwal.classList.remove("hidden");
+  panelJadwal.scrollIntoView({behavior:"smooth"});
+});
+document.getElementById("batalJadwal").addEventListener("click",resetFormJadwal);
+cariJadwal.addEventListener("input",tampilkanJadwal);
+
+formJadwal.addEventListener("submit",e=>{
+  e.preventDefault();
+  const id=idJadwal.value, kodeBaru=kodeJadwal.value.trim(), rute=ruteJadwal.value.trim();
+  if (!kodeBaru || !rute || !jamBerangkat.value || !jamTiba.value || !armadaJadwal.value) {
+    alert("Lengkapi semua data jadwal.");return;
+  }
+  if (jamBerangkat.value >= jamTiba.value) {
+    alert("Jam kedatangan harus lebih akhir daripada jam keberangkatan.");return;
+  }
+  if (jadwal.some(j=>j.kode.toLowerCase()===kodeBaru.toLowerCase() && j.id!==id)) {
+    alert("Kode jadwal sudah digunakan.");return;
+  }
+  const baru={id:id||idBaru("J"),kode:kodeBaru,rute,armada:armadaJadwal.value,berangkat:jamBerangkat.value,tiba:jamTiba.value,status:statusJadwal.value};
+  const lama=jadwal;
+  jadwal=id ? jadwal.map(j=>j.id===id?baru:j) : [...jadwal,baru];
+  if (!simpanData(KEY_JADWAL,jadwal)) {jadwal=lama;return;}
+  resetFormJadwal();tampilkanJadwal();
+  alert(id ? "Jadwal berhasil diperbarui." : "Jadwal berhasil ditambahkan.");
+});
+tabelJadwal.addEventListener("click",e=>{
+  const btn=e.target.closest("button[data-jadwal]");
+  if(!btn)return;
+  const item=jadwal.find(j=>j.id===btn.dataset.id);
+  if(!item)return;
+  if(btn.dataset.jadwal==="edit"){
+    idJadwal.value=item.id;kodeJadwal.value=item.kode;ruteJadwal.value=item.rute;
+    isiPilihanArmada();armadaJadwal.value=item.armada;
+    jamBerangkat.value=item.berangkat;jamTiba.value=item.tiba;statusJadwal.value=item.status;
+    document.getElementById("judulFormJadwal").textContent="Edit Jadwal";
+    panelJadwal.classList.remove("hidden");panelJadwal.scrollIntoView({behavior:"smooth"});
+  }else if(confirm(`Hapus jadwal ${item.kode}?`)){
+    const lama=jadwal;jadwal=jadwal.filter(j=>j.id!==item.id);
+    if(!simpanData(KEY_JADWAL,jadwal)){jadwal=lama;return;}
+    resetFormJadwal();tampilkanJadwal();
+  }
+});
+
+// FILTER TIKET
+const ticketSearch=document.getElementById("ticketSearch");
+const statusFilter=document.getElementById("statusFilter");
+const ticketRows=Array.from(document.querySelectorAll("#ticketTable tr"));
+function filterTickets(){
+  const keyword=ticketSearch.value.toLowerCase().trim();
+  const status=statusFilter.value;
+  let jumlah=0;
+  ticketRows.forEach(row=>{
+    const tampil=row.textContent.toLowerCase().includes(keyword)&&(!status||row.dataset.status===status);
+    row.classList.toggle("hidden",!tampil);
+    if(tampil)jumlah++;
+  });
+  document.getElementById("noTickets").classList.toggle("hidden",jumlah>0);
+  document.getElementById("ticketCount").textContent=`${jumlah} transaksi ditampilkan`;
+}
+ticketSearch.addEventListener("input",filterTickets);
+statusFilter.addEventListener("change",filterTickets);
+
+// INISIALISASI
+tampilkanArmada();
+isiPilihanArmada();
+tampilkanJadwal();
+filterTickets();
+lucide.createIcons();
+</script>
+</body>
+</html>
